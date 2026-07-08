@@ -40,8 +40,14 @@ def decode_ids_to_tokens(ids, id_to_token):
         decoded_sentence.append(id_to_token[num_id])
     return decoded_sentence
 
-# Step 5 - pad_id_sequence (not yet solved)
-# TODO: implement
+# Step 5 - pad_id_sequence
+def pad_id_sequence(ids, max_len, pad_id):
+    padded_sequence = [pad_id for _ in range(max_len)]
+    for i in range(max_len):
+        if i >= len(ids):
+            break
+        padded_sequence[i] = ids[i]
+    return padded_sequence
 
 # Step 6 - stack_padded_sequences_to_batch (not yet solved)
 # TODO: implement
