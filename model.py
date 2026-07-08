@@ -73,8 +73,15 @@ def compute_positional_div_term(d_model):
         div_vector.append(10000 ** ((-2 * i) / d_model))
     return torch.tensor(div_vector, dtype = torch.float)
 
-# Step 9 - build_position_index_column (not yet solved)
-# TODO: implement
+# Step 9 - build_position_index_column
+import torch
+
+def build_position_index_column(max_len):
+    """Return a (max_len, 1) float tensor of [0, 1, ..., max_len-1]."""
+    position_idx = []
+    for i in range(max_len):
+        position_idx.append([i])
+    return torch.tensor(position_idx, dtype=torch.float)
 
 # Step 10 - fill_even_indices_with_sin (not yet solved)
 # TODO: implement
