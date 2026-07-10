@@ -156,8 +156,12 @@ def compute_raw_attention_scores(query, key):
     raw_attention_scores = torch.matmul(query, torch.transpose(key, -1,-2))
     return raw_attention_scores
 
-# Step 18 - scale_attention_scores (not yet solved)
-# TODO: implement
+# Step 18 - scale_attention_scores
+import torch
+import math
+
+def scale_attention_scores(scores, d_k):
+    return scores / math.sqrt(d_k)
 
 # Step 19 - mask_attention_scores_with_neg_inf (not yet solved)
 # TODO: implement
