@@ -148,8 +148,13 @@ def combine_padding_and_causal_masks(padding_mask, causal_mask):
     combined_mask = torch.logical_and(padding_mask, causal_mask)
     return combined_mask
 
-# Step 17 - compute_raw_attention_scores (not yet solved)
-# TODO: implement
+# Step 17 - compute_raw_attention_scores
+import torch
+
+def compute_raw_attention_scores(query, key):
+    """Compute raw attention scores Q @ K^T over the last two dimensions."""
+    raw_attention_scores = torch.matmul(query, torch.transpose(key, -1,-2))
+    return raw_attention_scores
 
 # Step 18 - scale_attention_scores (not yet solved)
 # TODO: implement
