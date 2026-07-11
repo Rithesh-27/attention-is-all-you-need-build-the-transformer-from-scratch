@@ -217,7 +217,7 @@ import torch
 
 def merge_heads_back_to_model_dim(multi_head_tensor):
     multi_head_tensor = multi_head_tensor.transpose(1,2)
-    # multi_head_tensor = multi_head_tensor.contiguous()
+    multi_head_tensor = multi_head_tensor.contiguous()
     B,L,H,d = multi_head_tensor.shape
     return multi_head_tensor.reshape(B,L,H*d)
 
