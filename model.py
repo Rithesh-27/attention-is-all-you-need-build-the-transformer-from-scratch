@@ -317,8 +317,11 @@ def encoder_layer_self_attention_sublayer(x, w_q, w_k, w_v, w_o, gamma, beta, nu
     final_output = apply_residual_add_and_norm(x,attention_output,gamma,beta)
     return final_output
 
-# Step 40 - encoder_layer_feed_forward_sublayer (not yet solved)
-# TODO: implement
+# Step 40 - encoder_layer_feed_forward_sublayer
+def encoder_layer_feed_forward_sublayer(x, w1, b1, w2, b2, gamma, beta):
+    ffn_output = position_wise_feed_forward_network(x,w1,b1,w2,b2)
+    final_output = apply_residual_add_and_norm(x,ffn_output,gamma,beta)
+    return final_output
 
 # Step 41 - assemble_encoder_layer (not yet solved)
 # TODO: implement
