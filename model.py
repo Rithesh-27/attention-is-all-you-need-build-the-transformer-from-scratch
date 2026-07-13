@@ -386,8 +386,14 @@ def assemble_decoder_layer(y, encoder_output, layer_params, num_heads, src_mask,
     final_output = decoder_layer_feed_forward_sublayer(cross_attn_output,layer_params["w1"],layer_params["b1"],layer_params["w2"],layer_params["b2"],layer_params["ffn_gamma"],layer_params["ffn_beta"])
     return final_output
 
-# Step 47 - stack_decoder_layers (not yet solved)
-# TODO: implement
+# Step 47 - stack_decoder_layers
+def stack_decoder_layers(y, encoder_output, decoder_layer_params_list, num_heads, src_mask, tgt_mask):
+    curr_input = y
+    for params in decoder_layer_params_list:
+        output = assemble_decoder_layer(curr_input,encoder_output,params,num_heads,src_mask,tgt_mask)
+        curr_input = output
+    final_output = curr_input
+    return final_output
 
 # Step 48 - apply_final_output_projection (not yet solved)
 # TODO: implement
