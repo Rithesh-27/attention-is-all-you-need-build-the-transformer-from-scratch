@@ -564,8 +564,12 @@ def collect_model_parameters_into_list(encoder_layer_params, decoder_layer_param
 
     return parameters
 
-# Step 56 - shift_targets_right_with_start_token (not yet solved)
-# TODO: implement
+# Step 56 - shift_targets_right_with_start_token
+def shift_targets_right_with_start_token(target_ids, start_token_id):
+    B,T = target_ids.shape
+    start_list = [start_token_id for _ in range(B)]
+    start_token_col = torch.tensor(start_list).reshape((B,1))
+    return torch.cat((start_token_col,target_ids[:,:T-1]),dim=-1)
 
 # Step 57 - compute_noam_learning_rate (not yet solved)
 # TODO: implement
