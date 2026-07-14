@@ -728,8 +728,16 @@ def run_training_step_with_backprop(src_batch, tgt_batch, parameter_list, model_
     optimizer_state = apply_adam_step_to_all_parameters(parameter_list,optimizer_state,learning_rate)
     return batch_training_loss.item()
 
-# Step 73 - run_training_loop_for_steps (not yet solved)
-# TODO: implement
+# Step 73 - run_training_loop_for_steps
+def run_training_loop_for_steps(batches, parameter_list, model_params, optimizer_state, num_steps, config):
+    """Run num_steps training iterations, cycling through batches, and return per-step losses."""
+    num_batches = len(batches)
+    loss_value = []
+    for step in range(1,num_steps + 1):
+        batch = batches[(step - 1) % num_batches]
+        step_loss = run_training_step_with_backprop(batch[0],batch[1],parameter_list,model_params,optimizer_state,step,config)
+        loss_value.append(step_loss)
+    return loss_value
 
 # Step 74 - pick_next_token_by_argmax (not yet solved)
 # TODO: implement
