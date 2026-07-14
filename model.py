@@ -581,8 +581,15 @@ import torch
 def build_uniform_smoothing_distribution(shape, vocab_size, epsilon):
     return torch.ones(shape) * (epsilon / (vocab_size - 2))
 
-# Step 59 - set_confidence_on_gold_tokens (not yet solved)
-# TODO: implement
+# Step 59 - set_confidence_on_gold_tokens
+import torch
+
+def set_confidence_on_gold_tokens(smoothed_distribution, gold_token_ids, confidence):
+    """Place confidence mass at gold-token positions of a smoothed target distribution."""
+    B,T = gold_token_ids.shape
+    gold_token_ids = gold_token_ids.reshape((B,T,1))
+    smoothed_tensor = smoothed_distribution.scatter(dim=-1,index=gold_token_ids,value=confidence)
+    return smoothed_tensor
 
 # Step 60 - zero_pad_column_and_pad_token_rows (not yet solved)
 # TODO: implement
