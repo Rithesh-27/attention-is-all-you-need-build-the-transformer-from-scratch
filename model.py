@@ -532,11 +532,13 @@ def init_embedding_and_projection_parameters(vocab_size, d_model, tie_weights=Tr
     tgt_embedding = torch.randn(vocab_size,d_model,dtype=torch.float32,requires_grad=True)
     if tie_weights:
         return {"src_embedding":src_embedding,
+                "token_embedding":src_embedding,
                 "tgt_embedding":tgt_embedding,
                 "output_projection":tgt_embedding
                 }
     output_projection = torch.randn(vocab_size,d_model,dtype=torch.float32,requires_grad=True)
     return {"src_embedding":src_embedding,
+            "token_embedding":src_embedding,
             "tgt_embedding":tgt_embedding,
             "output_projection":output_projection
             }
@@ -691,8 +693,23 @@ def zero_all_parameter_gradients(parameter_list):
     for param in parameter_list:
         param.grad = None
 
-# Step 71 - compute_batch_training_loss (not yet solved)
-# TODO: implement
+# Step 71 - compute_batch_training_loss
+def compute_batch_training_loss(src_batch, tgt_batch, model_params, config):
+    pad_id = config["pad_id"]
+    start_id = config["start_id"]
+    vocab_size = config["vocab_size"]
+    smoothing = config["smoothing"]
+    num_heads = config["num_heads"]
+    
+    tgt_batch_shifted = shift_targets_right_with_start_token(tgt_batch, start_id)
+    logits = run_transformer_forward(src_batch, tgt_batch_shifted, model_params, num_heads, pad_id)
+    smoothed_distribution = build_uniform_smoothing_distribution(logits.shape,vocab_size,smoothing)
+    smoothed_distribution = set_confidence_on_gold_tokens(smoothed_distribution,tgt_batch,1 - smoothing)
+    smoothed_distribution = zero_pad_column_and_pad_token_rows(smoothed_distribution,tgt_batch,pad_id)
+
+    total_loss = compute_label_smoothed_kl_loss(logits,smoothed_distribution)
+    loss = average_loss_over_non_pad_tokens(total_loss,tgt_batch,pad_id)
+    return loss
 
 # Step 72 - run_training_step_with_backprop (not yet solved)
 # TODO: implement
